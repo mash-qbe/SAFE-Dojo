@@ -224,7 +224,7 @@ let navbar =
                                 prop.style [ style.color.white; style.transform.scaleX -1 ]
                                 prop.children [ Html.i [ prop.className "fas fa-unlock-alt" ] ]
                             ]
-                            Html.span [ prop.style [ style.color.white ]; prop.text "SAFE Dojo" ]
+                            Html.span [ prop.style [ style.color.white ]; prop.text "SAFE Dojo App" ]
                         ]
                     ]
                 ]

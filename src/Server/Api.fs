@@ -63,7 +63,7 @@ let dojoApi = {
 
     (* Task 1.1 CRIME: Bind the getCrimeReport function to the GetCrimes method to
          return crime data. Use the above GetDistance field as an example. *)
-    GetCrimes = fun postcode -> async { return Array.empty }
+    GetCrimes = getCrimeReport  //fun postcode -> async { return Array.empty }
 
 (* Task 4.2 WEATHER: Hook up the weather endpoint to the getWeather function. *)
 }

@@ -79,11 +79,15 @@ let update msg model =
         Cmd.none
 
     | PostcodeChanged p ->
+        let validationError =
+                if Validation.isValidPostcode p then None else Some "Invalid postcode"
         { model with
             Postcode = p
+            ValidationError = validationError
+            
             (* Task 2.2 Validation. Use the Validation.isValidPostcode function to implement client-side form validation.
                Note that the validation is the same shared code that runs on the server! *)
-            ValidationError = None
+            //ValidationError = None
         },
         Cmd.none
 

@@ -45,18 +45,14 @@ let private asWeatherResponse (weather: Weather.OpenMeteoCurrentWeather.CurrentW
 }
 
 let getWeather postcode = async {
-    (* Task 4.1 WEATHER: Implement a function that retrieves the weather for
-       the given postcode. Use the GeoLocation.getLocation, Weather.getWeatherForPosition and
-       asWeatherResponse functions to create and return a WeatherResponse instead of the stub.
-       Don't forget to use let! instead of let to "await" the Task. *)
+    if not (Validation.isValidPostcode postcode) then
+        failwith "Invalid postcode"
 
-    let emptyWeather = {
-        WeatherType = WeatherType.Clear
-        Temperature = 0.
-    }
+    let! location = getLocation postcode
+    let! weather = getWeatherForPosition location.LatLong
+    let weatherResponse = weather |> asWeatherResponse
+    return weatherResponse }
 
-    return emptyWeather
-}
 
 let dojoApi = {
     GetDistance = getDistanceFromLondon

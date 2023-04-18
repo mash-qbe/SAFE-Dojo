@@ -2,6 +2,11 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
 WORKDIR /app
 
+# copy and restore paket first to speed up build
+COPY ["paket.dependencies", "paket.lock", "./"]
+RUN dotnet tool restore
+RUN dotnet tool run paket restore
+
 COPY . .
 
 RUN dotnet restore ./Build.fsproj
@@ -17,3 +22,9 @@ COPY --from=build /app/build .
 EXPOSE 80
 
 ENTRYPOINT ["dotnet", "Server.dll"]
+
+
+
+
+
+

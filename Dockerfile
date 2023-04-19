@@ -1,19 +1,23 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-
 WORKDIR /app
 
 COPY . .
 
-RUN dotnet restore ./Build.fsproj
+RUN dotnet tool restore
+RUN dotnet tool install paket --tool-path /app/tools
+ENV PATH="${PATH}:/app/tools"
+RUN dotnet tool run paket restore
 
-RUN dotnet build ./Build.fsproj -c Release -o /app/build
+COPY src/Client/Client.fsproj src/Client/
+RUN dotnet restore src/Client/Client.fsproj
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
+COPY . .
+RUN dotnet publish src/Server/Server.fsproj -c Release -o /app/publish
 
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
+COPY --from=build /app/publish .
+RUN apt-get update && apt-get install -y net-tools
 
-COPY --from=build /app/build .
-
-EXPOSE 80
-
+EXPOSE 8080
 ENTRYPOINT ["dotnet", "Server.dll"]
